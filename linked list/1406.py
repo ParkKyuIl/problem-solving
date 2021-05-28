@@ -1,83 +1,44 @@
-class Node: # 노드 클래스 생성
-    def __init__(self, data, prev = None, next = None): # 생성자, 셀프와, 데이터값, 그리고 이전값 포인터, 다음값 포인터
-        self.data = data # 받은 값을 셀프에 할당
-        self.prev = prev # 생성자이기 때문에 할당되도 None으로 할당
-        self.next = next # 생성자이기 때문에 할당되도 None으로 할당
+# 문제
+# 한 줄로 된 간단한 에디터를 구현하려고 한다. 이 편집기는 영어 소문자만을 기록할 수 있는 편집기로, 최대 600, 000글자까지 입력할 수 있다.
 
-class DLinkedList: #더블링크드리스트 클래스 선언
-    def __init__(self): # 더블링크드리스트 생성자 선언
-        self.head = None  # 전체 링크드리스트이 첫번째 노드인 head 생성, 그러나 첫 생성시에 내부에는 노드가 없으므로  None 
-    
-    def insert(self, data):  # (끝에 넣는것)삽입 메서드, 객체 자체인 self와 data값을 매개변수로 요구 한다. 
-        if self.head == None:   # 값을 넣는데, 만약에 head가 없다면, 즉 빈 리스트이면?
-            self.head = Node(data)  # 해당 값을 이용하여 노드 객체를 만들고, 이를 헤드로 지정 해준다. 
-        else:   # 만약 리스트 안에 노드가 존재한다면
-            node = self.head # head 객체를 노드에 할당
-            
-            while node.next: # 그리고 head로 부터 시작해서 노드의 next가 존재할때 까지, 즉 끝에 달할때 까지
-                node = node.next # 다음값 포인터를 이용하여 계속 뒤로 움직인다. 
-                                 # 그리고 아까 위의 조건대로 끝에 달하면 while 문 탈출
-                
-            temp = Node(data)  # 아까 받은 data를 토대로 노드를 하나 만들고
-            node.next = temp   # 위의 temp 객체를 아까 끝에 도달한 노드가 다음값으로 가르키게 하고
-            temp.prev = node   # 끝에 도달한 노드가 temp(insert 할 값)의 이전값이 되게 한다.
+# 이 편집기에는 '커서'라는 것이 있는데, 커서는 문장의 맨 앞(첫 번째 문자의 왼쪽), 문장의 맨 뒤(마지막 문자의 오른쪽), 또는 문장 중간 임의의 곳(모든 연속된 두 문자 사이)에 위치할 수 있다. 즉 길이가 L인 문자열이 현재 편집기에 입력되어 있으면, 커서가 위치할 수 있는 곳은 L+1가지 경우가 있다.
 
-            # 요약: 헤드 받아서 끝까지 쭉 탐색해서 끝의 노드를 끝 노드로 기억했다가
-            # 끝에 insert할 데이터 가진 temp 하나 만들어서 temp의 prev이 끝 노드가 되게 하고 
-            # 끝 노드의 다음값을 temp를 가르키게 하면 맨 끝에 노드가 하나 추가 되는 원리
-    
-    def descend(self):  # 걍 출력임
-        node = self.head
-        
-        while node:   # 노드 없을때 까지 반복해서 출력
-            print(node.data)
-            node = node.next
-    
-    def delete(self, data): # 삭제 
-        if self.head == None: # head가 없다면, 즉 리스트가 비었다면
-            return False  # false 리턴
-        
-        if self.head.data == data:  # 만약에 삭제하려는 데이터가 head의 데이터면?
-            temp = self.head          # 헤드를 temp에 저장하고 
-            self.head = self.head.next # 지울꺼니까 헤드의 다음값을 본인으로 두게 하고
-            self.head.prev = None # prev은 None으로, 근데 왜 prev은 굳이 None이지??
-            del temp # 지우기
-        
-        else:
-            node = self.head #객체의 head를 노드로 설정 
+# 이 편집기가 지원하는 명령어는 다음과 같다.
 
-            while node.next:              # next가 존재할때까지 탐색 (끝까지)
-                if node.next.data == data: # 지우고자 하는 데이터가 그 다음에 있다면?  
-                    temp = node.next    # # 그전의 노드의 다음값을 temp에 저장을 하고
-                    node.next = node.next.next # 지우고자 하는 노드의 다음값을 그전의 노드의 다음값으로 할당
-                    
-                    if node.next == None: # 그다음 노드가 없다면
-                        pass              # 암것도 안하고 패스
-                    else:
-                        node.next.prev = node # 아니라면 노드 그다음(지우려고 하는 노드, 그 다음거)의 prev을 노드에 저장 
-                                              # 앞에 꺼와 뒤에꺼를 연걸하는 작업
-                     
-                    del temp   # 메모리 삭제
-                
-                else:
-                    node = node.next  # 위에 node.next.data == data가 (현재 노드의 다음 노드가 우리가 삭제하려는 노드가 아니면)
-                                      # 그 다음노드로 전진
+# L	커서를 왼쪽으로 한 칸 옮김(커서가 문장의 맨 앞이면 무시됨)
+# D	커서를 오른쪽으로 한 칸 옮김(커서가 문장의 맨 뒤이면 무시됨)
+# B	커서 왼쪽에 있는 문자를 삭제함(커서가 문장의 맨 앞이면 무시됨)
+# 삭제로 인해 커서는 한 칸 왼쪽으로 이동한 것처럼 나타나지만, 실제로 커서의 오른쪽에 있던 문자는 그대로임
+# P $	$라는 문자를 커서 왼쪽에 추가함
+# 초기에 편집기에 입력되어 있는 문자열이 주어지고, 그 이후 입력한 명령어가 차례로 주어졌을 때, 모든 명령어를 수행하고 난 후 편집기에 입력되어 있는 문자열을 구하는 프로그램을 작성하시오. 단, 명령어가 수행되기 전에 커서는 문장의 맨 뒤에 위치하고 있다고 한다.
+
+# 입력
+# 첫째 줄에는 초기에 편집기에 입력되어 있는 문자열이 주어진다. 이 문자열은 길이가 N이고, 영어 소문자로만 이루어져 있으며, 길이는 100, 000을 넘지 않는다. 둘째 줄에는 입력할 명령어의 개수를 나타내는 정수 M(1 ≤ M ≤ 500, 000)이 주어진다. 셋째 줄부터 M개의 줄에 걸쳐 입력할 명령어가 순서대로 주어진다. 명령어는 위의 네 가지 중 하나의 형태로만 주어진다.
+
+# 출력
+# 첫째 줄에 모든 명령어를 수행하고 난 후 편집기에 입력되어 있는 문자열을 출력한다.
+
+import sys
+
+right = []
 
 
-#Test Code
-dLinked_list = DLinkedList()
+left = list(sys.stdin.readline().strip())
 
-for a in range(1, 10):
-    dLinked_list.insert(a)
+command_num = int(sys.stdin.readline())
 
-dLinked_list.descend()
+for _ in range(command_num):
+    command = list(sys.stdin.readline().strip())
 
-dLinked_list.delete(1)
-dLinked_list.delete(9)
-dLinked_list.delete(8)
-dLinked_list.delete(101)
-
-
-dLinked_list.descend()
-
-print(dLinked_list.head.next.prev.data)
+    if command[0] == 'L' and left != []:
+        right.append(left.pop())
+    elif command[0] == 'D' and right != []:
+        left.append(right.pop())
+    elif command[0] == 'B' and left != []:
+        left.pop()
+    elif command[0] == 'P':
+        left.append(command[2])
+    else:
+        continue
+right.reverse()
+print("".join(left+right))
