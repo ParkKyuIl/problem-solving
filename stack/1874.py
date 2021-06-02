@@ -14,3 +14,30 @@
 # 입력된 수열을 만들기 위해 필요한 연산을 한 줄에 한 개씩 출력한다. push연산은 + 로, pop 연산은 - 로 표현하도록 한다. 불가능한 경우 NO를 출력한다.
 
 
+import sys
+
+n = int(sys.stdin.readline())
+count = 0
+stack = []
+result = []
+no_message = True
+
+for i in range(0, n):
+    x = int(sys.stdin.readline())
+
+    while count < x:
+      count += 1
+      stack.append(count)
+      result.append("+")
+
+    if stack[-1] == x:
+        stack.pop()
+        result.append("-")
+    else:
+        no_message = False
+        break  # a clean exit without any errors / problems
+
+if no_message == False:
+    print("NO")
+else:
+    print("\n".join(result))
