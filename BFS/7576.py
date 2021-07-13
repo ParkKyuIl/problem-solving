@@ -22,18 +22,7 @@
 
 import sys
 from collections import deque
-graph = []
 
-dx = [-1,1,0,0]
-dy = [0,0,-1,1]
-
-r,c = map(int,sys.stdin.readline().split())
-check = [[0]*r for _ in range(c)]
-
-for i in range(c):
-    graph.append(list(map(int,sys.stdin.readline().rstrip().split())))
-
-check = [[0]*r for _ in range(c) ]
 def bfs(graph):
     flag = False
     max = 0
@@ -44,8 +33,7 @@ def bfs(graph):
             if graph[i][j] == 1:  # 왜 indexError가 뜨지???
                 queue.append((i,j))
                 flag = True
-            
-            
+              
     if flag == False:
         return 0
 
@@ -76,9 +64,20 @@ def bfs(graph):
             if graph[i][j] >= max:
                 max = graph[i][j]
 
-
-
     return graph,max
+
+graph = []
+
+dx = [-1,1,0,0]
+dy = [0,0,-1,1]
+
+r,c = map(int,sys.stdin.readline().split())
+check = [[0]*r for _ in range(c)]
+
+for i in range(c):
+    graph.append(list(map(int,sys.stdin.readline().rstrip().split())))
+
+check = [[0]*r for _ in range(c) ]
 
 if bfs(graph) == 0:
     print(-1)

@@ -18,16 +18,6 @@
 
 import sys
 from collections import deque
-graph = []
-
-dx = [-1,1,0,0]
-dy = [0,0,-1,1]
-
-n,m = map(int,sys.stdin.readline().split())
- 
-for i in range(n):
-    graph.append(list(map(int,sys.stdin.readline().rstrip())))
-
 
 def bfs(x,y):
     queue = deque()
@@ -40,21 +30,31 @@ def bfs(x,y):
             nx = x + dx[i]
             ny = y + dy[i]
 
-            if nx < 0 or ny < 0 or nx >= n or ny >= m:            
+            if nx < 0 or ny < 0 or nx >= n or ny >= m: #외곽으로 벗어났는가?       
                 continue
 
-            if graph[nx][ny] == 0:
+            if graph[nx][ny] == 0: #벽인가?
                 continue
 
-            if graph[nx][ny] == 1 and check[nx][ny] == 0: 
-                check[nx][ny] = 1
-                graph[nx][ny] = graph[x][y] + 1
-                queue.append((nx,ny))
+            if graph[nx][ny] == 1 and check[nx][ny] == 0: #갈수있는길이고, 방문처리가 아직 안되었다면!
+                check[nx][ny] = 1 #방문처리
+                graph[nx][ny] = graph[x][y] + 1 # 거리 측정
+                queue.append((nx,ny)) # 다음 탐색을 위해 큐에 삽입
     
     return graph[n-1][m-1]
 
+graph = []
+
+dx = [-1,1,0,0]
+dy = [0,0,-1,1]
+
+n,m = map(int,sys.stdin.readline().split())
 
 check = [[0]*m for _ in range(n)]
+ 
+for i in range(n):
+    graph.append(list(map(int,sys.stdin.readline().rstrip())))
+
 
 print(bfs(0,0))
 
