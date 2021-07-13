@@ -30,11 +30,54 @@
 import sys
 from collections import deque
 case_num = int(sys.stdin.readline())
-array = deque()
+reverse_flag = True
+error_flag = False
+count = 0
 for _ in range(case_num):
     command = list(sys.stdin.readline().rstrip())
-    length = int(sys.stdin.readline())
+    length = int(sys.stdin.readline()) 
+    array = sys.stdin.readline().rstrip()[1:-1].split(',')
+    array = deque(array)
+    for i in command:
+        if i == 'R':
+            if not array :
+                error_flag = True
+            elif reverse_flag == True:
+                reverse_flag = False
+            else:
+                reverse_flag = True
+            count += 1
+        elif i == 'D':
+            if not array or length == 0:
+                error_flag = True
+            elif reverse_flag == True:
+                array.popleft()
+            else:
+                array.pop()
+
+    if error_flag == True:
+        print("error")
     
-    array.append(sys.stdin.readline()[1:-2].split(','))
+    else:    
+        if count % 2 != 0: 
+            array.reverse()
+        print("[", end='') # 개행을 없애기 위해 end = ''를 넣는 것
+        for i in range(len(array)):
+            if i == len(array)-1:
+                print(str(array[i]),end='')
+            else:
+                print(array[i],end=',')
+        print("]")
+    
+    reverse_flag = True
+    error_flag = False
+    count = 0
+    
+
+
+            
+
+
+
 
 
