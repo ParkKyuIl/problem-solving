@@ -45,12 +45,12 @@ def bfs(x,y):
 
 graph = []
 
-dx = [-1,1,0,0]
+dx = [-1,1,0,0] #상하좌우
 dy = [0,0,-1,1]
 
 n,m = map(int,sys.stdin.readline().split())
 
-check = [[0]*m for _ in range(n)]
+check = [[0]*m for _ in range(n)] #방문기록용 이차원 배열
  
 for i in range(n):
     graph.append(list(map(int,sys.stdin.readline().rstrip())))

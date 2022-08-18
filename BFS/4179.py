@@ -41,10 +41,10 @@ def bfs(graph):
         for j in range(c):
             if graph[i][j] == 'J':
                 jihoon.append((i,j))
-                jihoon_dist[i][j] = 1
+                jihoon_dist[i][j] = 1 #방문처리
             elif graph[i][j] == 'F':
                 fire.append((i,j))
-                fire_dist[i][j] = 1
+                fire_dist[i][j] = 1   #방문처리
     
     while fire:
         x,y = fire.popleft()
