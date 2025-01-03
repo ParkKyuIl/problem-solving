@@ -46,6 +46,8 @@
 # 10 9 10 9 10
 # 7 2
 
+
+# 입출력, // 올림 나눗셈, 등등 진짜 브3인데 왤캐 오래걸렸냐
 def min_supervisors_needed(N, A, B, C):
     total_supervisors = 0
     
