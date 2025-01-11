@@ -1,7 +1,3 @@
-# 시험 감독 성공
- 
-# 시간 제한	메모리 제한	제출	정답	맞힌 사람	정답 비율
-# 2 초	512 MB	101161	31624	23577	29.765%
 # 문제
 # 총 N개의 시험장이 있고, 각각의 시험장마다 응시자들이 있다. i번 시험장에 있는 응시자의 수는 Ai명이다.
 
@@ -26,31 +22,51 @@
 # 1
 # 1 1
 # 예제 출력 1 
-# # 1
-
-
+# 1
+# 예제 입력 2 
 # 3
-# 3 4 5
+# 3 4 5   1 2 3    
 # 2 2
 # 예제 출력 2 
 # 7
+# 예제 입력 3 
+# 5
+# 1000000 1000000 1000000 1000000 1000000
+# 5 7
+# 예제 출력 3 
+# 714290
+# 예제 입력 4 
+# 5
+# 10 9 10 9 10
+# 7 20
+# 예제 출력 4 
+# 10
+# 예제 입력 5 
+# 5
+# 10 9 10 9 10
+# 7 2
 
 
-import sys
+# 입출력, // 올림 나눗셈, 등등 진짜 브3인데 왤캐 오래걸렸냐
+def min_supervisors_needed(N, A, B, C):
+    total_supervisors = 0
+    
+    for i in range(N):
 
-n = int(sys.stdin.readline().rstrip())
-
-rooms = list(map(int,sys.stdin.readline().split()))
-b,c = map(int,sys.stdin.readline().split())
-
-count = 0
-
-for i in range(n):
-    count +=1
-    if(rooms[i]-b)>0:  # 총 감독관 하나로 충분한 케이스를 거르기 위해 (rooms[i]-b가 음수면 count에 0이상의 값이 들어가버린다.)
-        count += (rooms[i]-b)//c
-        if((rooms[i]-b)%c !=0):
-            count+=1
+        total_supervisors += 1
+        remaining_students = A[i] - B  
         
+        if remaining_students > 0:
+            if(remaining_students % C == 0):
+                total_supervisors += (remaining_students) // C  
+            else: 
+                total_supervisors += (remaining_students) // C+1
+    
+    return total_supervisors
 
-print(count)
+
+N = int(input())  
+A = list(map(int, input().split()))  
+B, C = map(int, input().split())  
+
+print(min_supervisors_needed(N, A, B, C))
