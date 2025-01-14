@@ -21,19 +21,46 @@
 # if 문을 통해 %을 사용하여 5로 나눠 0이 된다면 count에 5를 나눈 숫자를 더해주고, 나누어 떨어지지 않는다면 총무게에 3을 빼고 count에 1을 더한다.
 # else 구문으로는 0으로 나누어 떨어지지 않을 시 -1을 출력하도록 한다.
 
-import sys
+# DP로 푼다면
 
-num = int(sys.stdin.readline().rstrip())
-count = 0
+def sugar_delivery(N):
+    # DP 배열 초기화
+    dp = [float('inf')] * (N + 1)
+    dp[0] = 0  # 0kg은 봉지가 필요 없음
 
-while num >= 0:
-  if num % 5 == 0:
-    count += int(num // 5)
-    print(count)
-    break
+    # DP 테이블 채우기
+    for i in range(3, N + 1):
+        if i >= 3:
+            dp[i] = min(dp[i], dp[i - 3] + 1)
+        if i >= 5:
+            dp[i] = min(dp[i], dp[i - 5] + 1)
+
+    # 결과 출력
+    return dp[N] if dp[N] != float('inf') else -1
+
+# 예시 실행
+N = int(input())
+print(sugar_delivery(N))
+
+
+
+
+# 그리디로 푼다면
+# import sys
+
+# num = int(sys.stdin.readline().rstrip())
+# count = 0
+
+# while num >= 0:
+#   if num % 5 == 0:
+#     count += int(num // 5)
+#     print(count)
+#     break
   
-  num -= 3
-  count += 1
+#   num -= 3
+#   count += 1
   
-else:
-  print(-1)
+# else:
+#   print(-1)
+
+
